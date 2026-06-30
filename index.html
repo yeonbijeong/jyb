@@ -666,6 +666,84 @@ nav.stuck .nav-social a:hover { color: var(--ink); background: rgba(0,0,0,.05); 
 .c-val { font-size:.82rem; font-weight:500; color:#fff; }
 .c-ext { margin-left:auto; font-size:.8rem; opacity:.3; flex-shrink:0; }
 
+/* ── ARTICLES ───────────────────────────────── */
+.arts {
+  padding: clamp(64px,9vw,112px) var(--px);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.arts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.art-card {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .32s var(--ease), box-shadow .32s var(--ease);
+  cursor: pointer;
+}
+.art-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 56px rgba(17,18,16,.08);
+}
+.art-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.art-cat {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 100px;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+.cat-article { background: rgba(17,18,16,.07); color: var(--ink-2); }
+.cat-column  { background: rgba(232,168,48,.13); color: #a56a08; }
+.art-title {
+  font-family: var(--serif);
+  font-size: clamp(.96rem, 1.3vw, 1.15rem);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  flex: 1;
+  margin-bottom: 20px;
+}
+.art-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+.art-source {
+  font-size: .67rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: .04em;
+  flex: 1;
+}
+.art-date {
+  font-size: .63rem;
+  color: var(--ink-3);
+}
+.art-arr {
+  font-size: .88rem;
+  color: var(--ink-3);
+  transition: transform .22s var(--ease), color .2s;
+  flex-shrink: 0;
+}
+.art-card:hover .art-arr { transform: translate(3px,-3px); color: var(--ink); }
+
 /* ── NEWSLETTER ──────────────────────────────── */
 .nl-section {
   background: var(--night);
@@ -942,6 +1020,7 @@ footer {
   .stat { text-align: center; }
   .philosophy { flex-direction: column; text-align: center; gap: 16px; }
   .philo-mark { display: none; }
+  .arts-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width:768px) {
   :root { --px: 20px; --nav-h: 60px; }
@@ -981,6 +1060,7 @@ footer {
 
   /* Cards */
   .cgrid { grid-template-columns: 1fr; }
+  .arts-grid { grid-template-columns: 1fr; }
   .sec-rule { display: none; }
 
   /* Newsletter */
@@ -1024,6 +1104,7 @@ footer {
   <div class="nav-center">
     <a href="#home">Home</a>
     <a href="#work">Work</a>
+    <a href="#articles">Articles</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
@@ -1055,10 +1136,11 @@ footer {
 <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="내비게이션 메뉴" aria-hidden="true">
   <button class="mm-close" id="mmClose" aria-label="메뉴 닫기">✕</button>
   <nav class="mm-links">
-    <a href="#home"    class="mm-link">Home</a>
-    <a href="#work"    class="mm-link">Work</a>
-    <a href="#about"   class="mm-link">About</a>
-    <a href="#contact" class="mm-link">Contact</a>
+    <a href="#home"     class="mm-link">Home</a>
+    <a href="#work"     class="mm-link">Work</a>
+    <a href="#articles" class="mm-link">Articles</a>
+    <a href="#about"    class="mm-link">About</a>
+    <a href="#contact"  class="mm-link">Contact</a>
   </nav>
   <a class="mm-cta" href="mailto:yeonbi.j721@gmail.com">Get in touch ↗</a>
 </div>
@@ -1211,6 +1293,55 @@ footer {
 
   </div>
 </section>
+
+<!-- ── ARTICLES & COLUMNS ───────────────────── -->
+<!--
+  기사 추가 방법:
+  아래 art-card 블록을 복사 → href에 노션 공개 링크 붙여넣기 → 제목·출처·날짜 수정
+  카테고리: cat-article(기사) / cat-column(칼럼)
+-->
+<div class="arts" id="articles">
+  <div class="sec-head">
+    <h2 class="sec-hl">기사 &amp; <em>칼럼</em></h2>
+    <div class="sec-rule" aria-hidden="true"></div>
+  </div>
+
+  <div class="arts-grid">
+
+    <a class="art-card rv" href="#" target="_blank" rel="noopener" aria-label="기사 읽기">
+      <span class="art-cat cat-article">기사</span>
+      <div class="art-title">기사 제목을 여기에 입력하세요 — 노션 링크 연결 후 실제 제목으로 교체</div>
+      <div class="art-meta">
+        <span class="art-source">TTL NEWS</span>
+        <span class="art-date">2025.03</span>
+        <span class="art-arr" aria-hidden="true">↗</span>
+      </div>
+    </a>
+
+    <a class="art-card rv d1" href="#" target="_blank" rel="noopener" aria-label="기사 읽기">
+      <span class="art-cat cat-article">기사</span>
+      <div class="art-title">기사 제목을 여기에 입력하세요 — 노션 링크 연결 후 실제 제목으로 교체</div>
+      <div class="art-meta">
+        <span class="art-source">TTL NEWS</span>
+        <span class="art-date">2024.11</span>
+        <span class="art-arr" aria-hidden="true">↗</span>
+      </div>
+    </a>
+
+    <a class="art-card rv d2" href="#" target="_blank" rel="noopener" aria-label="칼럼 읽기">
+      <span class="art-cat cat-column">칼럼</span>
+      <div class="art-title">칼럼 제목을 여기에 입력하세요 — 노션 링크 연결 후 실제 제목으로 교체</div>
+      <div class="art-meta">
+        <span class="art-source">Travel Insider C</span>
+        <span class="art-date">2025.01</span>
+        <span class="art-arr" aria-hidden="true">↗</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="hr"></div>
 
 <!-- ── ABOUT CARDS ───────────────────────────── -->
 <div class="cards" id="about">

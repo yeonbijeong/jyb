@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yeonbi Jeong — Content Editor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <style>
 
 /* ── TOKENS ─────────────────────────────────── */
@@ -27,8 +25,8 @@
   --rule:    rgba(17,18,16,.09);
   --rule-2:  rgba(17,18,16,.17);
 
-  --serif:   'Playfair Display', Georgia, serif;
-  --sans:    'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --serif:   'Pretendard Variable', Pretendard, system-ui, sans-serif;
+  --sans:    'Pretendard Variable', Pretendard, system-ui, -apple-system, sans-serif;
 
   --ease:    cubic-bezier(.22,1,.36,1);
   --nav-h:   68px;
@@ -60,14 +58,19 @@ nav {
   align-items: center;
   padding: 0 var(--px);
   z-index: 900;
-  transition: background .35s var(--ease), border-color .35s var(--ease);
-  border-bottom: 1px solid transparent;
+  color: #fff;
+  background: rgba(0,0,0,.38);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: background .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease), backdrop-filter .35s var(--ease);
 }
 nav.stuck {
-  background: rgba(237,238,235,.91);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(237,238,235,.93);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-color: var(--rule);
+  color: var(--ink);
 }
 .nav-logo {
   font-family: var(--serif);
@@ -78,6 +81,8 @@ nav.stuck {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .gem {
   font-size: .78rem;
@@ -91,33 +96,70 @@ nav.stuck {
   flex: 1;
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 32px;
+  min-width: 0;
 }
 .nav-center a {
   font-size: .67rem;
   font-weight: 500;
   letter-spacing: .15em;
   text-transform: uppercase;
-  color: var(--ink-2);
+  color: rgba(255,255,255,.65);
   transition: color .2s;
 }
-.nav-center a:hover { color: var(--ink); }
+.nav-center a:hover { color: #fff; }
+nav.stuck .nav-center a { color: var(--ink-2); }
+nav.stuck .nav-center a:hover { color: var(--ink); }
 
 .nav-cta {
   display: flex;
   align-items: center;
   gap: 7px;
   padding: 9px 20px;
-  background: var(--ink);
+  background: rgba(255,255,255,.15);
   color: #fff;
+  border: 1px solid rgba(255,255,255,.3);
   border-radius: 100px;
   font-size: .74rem;
   font-weight: 500;
   letter-spacing: .03em;
-  transition: opacity .2s, transform .2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: background .2s, transform .2s, border-color .2s;
 }
-.nav-cta:hover { opacity:.78; transform:scale(.97); }
-.nav-cta:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+.nav-cta:hover { background: rgba(255,255,255,.25); transform:scale(.97); }
+nav.stuck .nav-cta { background: var(--ink); border-color: transparent; backdrop-filter: none; }
+nav.stuck .nav-cta:hover { background: var(--ink); opacity: .8; }
+.nav-cta:focus-visible { outline:2px solid rgba(255,255,255,.6); outline-offset:3px; }
+
+/* Social icon links in nav — right side, clearly separated from logo */
+.nav-social {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 12px;
+  padding-right: 16px;
+  border-right: 1px solid rgba(255,255,255,.22);
+}
+.nav-social a {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: rgba(255,255,255,.65);
+  transition: color .2s, background .2s;
+}
+.nav-social a:hover {
+  color: #fff;
+  background: rgba(255,255,255,.12);
+}
+nav.stuck .nav-social { border-right-color: var(--rule-2); }
+nav.stuck .nav-social a { color: var(--ink-2); }
+nav.stuck .nav-social a:hover { color: var(--ink); background: rgba(0,0,0,.05); }
+.nav-social a:focus-visible { outline: 2px solid rgba(255,255,255,.5); outline-offset: 2px; }
+
 .dot {
   width: 6px; height: 6px;
   border-radius: 50%;
@@ -128,15 +170,40 @@ nav.stuck {
 
 /* ── HERO ───────────────────────────────────── */
 .hero {
+  position: relative;
   min-height: 100dvh;
   display: grid;
-  grid-template-columns: 2fr 1.55fr 1.3fr;
+  grid-template-columns: 2fr 1.3fr;
   align-items: center;
   padding: calc(var(--nav-h) + 32px) var(--px) 72px;
   gap: 28px;
-  max-width: var(--max-w);
-  margin: 0 auto;
+  overflow: hidden;
 }
+
+/* Background video */
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -120px; /* 워터마크가 있는 하단을 hero overflow:hidden으로 잘라냄 */
+  z-index: 0;
+}
+.hero-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(125deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,.2) 100%);
+}
+
+/* Left + Right columns sit above overlay */
+.hero-l, .hero-r { position: relative; z-index: 2; }
 
 /* Left */
 .hero-l { display:flex; flex-direction:column; gap:22px; }
@@ -149,14 +216,14 @@ nav.stuck {
   font-weight: 600;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: rgba(255,255,255,.65);
 }
 .hero-kicker::before {
   content: '';
   display: block;
   width: 24px;
   height: 1px;
-  background: var(--ink-3);
+  background: rgba(255,255,255,.5);
 }
 
 .hero-hl {
@@ -169,7 +236,7 @@ nav.stuck {
   display: block;
   font-size: clamp(1.6rem, 2.8vw, 2.9rem);
   font-weight: 400;
-  color: var(--ink-2);
+  color: rgba(255,255,255,.8);
   margin-bottom: .12em;
 }
 /* "has a job." — bold italic, large */
@@ -178,27 +245,27 @@ nav.stuck {
   font-size: clamp(3.4rem, 6.2vw, 6.4rem);
   font-weight: 700;
   font-style: italic;
-  color: var(--ink);
+  color: #fff;
   letter-spacing: -.05em;
 }
 
 .pills { display:flex; flex-wrap:wrap; gap:7px; }
 .pill {
   padding: 5px 13px;
-  border: 1px solid var(--rule-2);
+  border: 1px solid rgba(255,255,255,.3);
   border-radius: 100px;
   font-size: .75rem;
   font-weight: 500;
-  color: var(--ink-2);
+  color: rgba(255,255,255,.8);
   cursor: pointer;
   transition: background .2s, color .2s, border-color .2s;
 }
-.pill:hover { background:var(--ink); color:#fff; border-color:var(--ink); }
+.pill:hover { background: rgba(255,255,255,.2); color:#fff; border-color:rgba(255,255,255,.5); }
 
 .hero-bio {
   font-size: .88rem;
   line-height: 1.78;
-  color: var(--ink-2);
+  color: rgba(255,255,255,.75);
   max-width: 32ch;
 }
 
@@ -206,7 +273,7 @@ nav.stuck {
 .circle-cta {
   width: 120px; height: 120px;
   border-radius: 50%;
-  border: 1px solid var(--rule-2);
+  border: 1px solid rgba(255,255,255,.35);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -217,24 +284,26 @@ nav.stuck {
   position: relative;
   overflow: hidden;
   text-decoration: none;
-  color: inherit;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  background: rgba(255,255,255,.08);
 }
 .circle-cta::after {
   content: '';
   position: absolute; inset: 0;
-  background: var(--ink);
+  background: rgba(255,255,255,.2);
   border-radius: 50%;
   transform: scale(0);
   transition: transform .42s var(--ease);
 }
 .circle-cta:hover::after { transform: scale(1); }
-.circle-cta:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+.circle-cta:focus-visible { outline:2px solid rgba(255,255,255,.6); outline-offset:3px; }
 .cc-sub, .cc-main, .cc-arr { position:relative; z-index:1; transition:color .33s; }
 .cc-sub {
   font-size: .56rem;
   letter-spacing: .13em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: rgba(255,255,255,.6);
   line-height: 1.35;
 }
 .cc-main {
@@ -243,49 +312,10 @@ nav.stuck {
   font-weight: 600;
   line-height: 1.15;
 }
-.cc-arr { font-size: .88rem; color: var(--ink-2); }
+.cc-arr { font-size: .88rem; color: rgba(255,255,255,.7); }
 .circle-cta:hover .cc-sub,
 .circle-cta:hover .cc-main,
 .circle-cta:hover .cc-arr { color:#fff; }
-
-/* Center — video */
-.hero-m { display:flex; justify-content:center; align-items:center; }
-.hero-frame {
-  width: min(340px, 36vw);
-  aspect-ratio: 3/4;
-  border-radius: 180px;
-  overflow: hidden;
-  position: relative;
-  background: var(--night-2);
-  box-shadow:
-    0 56px 100px rgba(17,18,16,.15),
-    0 16px 32px rgba(17,18,16,.08);
-}
-.hero-frame video {
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  object-fit:cover;
-}
-.vid-ph {
-  position:absolute; inset:0;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  gap:14px;
-  background:linear-gradient(158deg,#161714 0%,#1E201B 55%,#161714 100%);
-}
-.vid-ring {
-  width:52px; height:52px;
-  border-radius:50%;
-  border:1.5px solid rgba(255,255,255,.18);
-  display:flex; align-items:center; justify-content:center;
-}
-.vid-ring svg { width:17px; height:17px; fill:rgba(255,255,255,.4); margin-left:3px; }
-.vid-tag {
-  font-size:.6rem;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.24);
-}
 
 /* Right — stats */
 .hero-r { display:flex; flex-direction:column; gap:36px; align-items:flex-end; }
@@ -296,7 +326,7 @@ nav.stuck {
   font-weight:600;
   letter-spacing:.16em;
   text-transform:uppercase;
-  color:var(--ink-3);
+  color:rgba(255,255,255,.55);
   line-height:1.5;
   margin-bottom:2px;
 }
@@ -307,6 +337,7 @@ nav.stuck {
   font-weight:700;
   line-height:1;
   letter-spacing:-.05em;
+  color:#fff;
 }
 
 /* Fixed bottom strip */
@@ -322,19 +353,20 @@ nav.stuck {
 }
 .strip-tag {
   font-size:.7rem;
-  color:var(--ink-3);
+  color:rgba(255,255,255,.55);
   font-style:italic;
   font-family:var(--serif);
   pointer-events:auto;
+  transition:color .35s;
 }
 .strip-icons { display:flex; gap:14px; pointer-events:auto; }
 .strip-icons a {
   width:30px; height:30px;
   display:flex; align-items:center; justify-content:center;
-  color:var(--ink-2);
+  color:rgba(255,255,255,.55);
   transition:color .2s;
 }
-.strip-icons a:hover { color:var(--ink); }
+.strip-icons a:hover { color:#fff; }
 .strip-icons svg { width:14px; height:14px; }
 
 /* ── HR ──────────────────────────────────────── */
@@ -634,6 +666,152 @@ nav.stuck {
 .c-val { font-size:.82rem; font-weight:500; color:#fff; }
 .c-ext { margin-left:auto; font-size:.8rem; opacity:.3; flex-shrink:0; }
 
+/* ── NEWSLETTER ──────────────────────────────── */
+.nl-section {
+  background: var(--night);
+  padding: 96px var(--px) 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.nl-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(180,140,80,.12), transparent),
+    radial-gradient(ellipse 40% 60% at 80% 80%, rgba(60,100,180,.08), transparent);
+  pointer-events: none;
+}
+.nl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 100px;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 28px;
+}
+.nl-badge-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #e8a830;
+  animation: blink 2.6s ease-in-out infinite;
+}
+.nl-eyebrow {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #e8a830;
+  margin-bottom: 16px;
+  display: block;
+}
+.nl-headline {
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -.04em;
+  margin-bottom: 10px;
+}
+.nl-headline em {
+  font-style: italic;
+  color: #e8a830;
+}
+.nl-sub {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: rgba(255,255,255,.45);
+  font-style: italic;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+.nl-promise {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.nl-promise-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .76rem;
+  color: rgba(255,255,255,.55);
+}
+.nl-promise-item::before {
+  content: '✓';
+  font-size: .65rem;
+  color: #e8a830;
+  font-weight: 700;
+}
+.nl-form {
+  display: flex;
+  gap: 10px;
+  max-width: 480px;
+  margin: 0 auto 16px;
+}
+.nl-input {
+  flex: 1;
+  padding: 14px 20px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 100px;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: .88rem;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.nl-input::placeholder { color: rgba(255,255,255,.28); }
+.nl-input:focus {
+  border-color: rgba(255,255,255,.35);
+  background: rgba(255,255,255,.1);
+}
+.nl-btn {
+  padding: 14px 26px;
+  background: #e8a830;
+  color: #0d0e0c;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity .2s, transform .2s;
+}
+.nl-btn:hover { opacity: .85; transform: scale(.97); }
+.nl-btn:focus-visible { outline: 2px solid #e8a830; outline-offset: 3px; }
+.nl-note {
+  font-size: .68rem;
+  color: rgba(255,255,255,.22);
+  letter-spacing: .03em;
+}
+.nl-disclaimer {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  font-family: var(--serif);
+  font-size: .82rem;
+  font-style: italic;
+  color: rgba(255,255,255,.28);
+  line-height: 1.7;
+}
+.nl-disclaimer strong {
+  color: rgba(255,255,255,.55);
+  font-style: normal;
+}
+
 /* ── FOOTER ──────────────────────────────────── */
 footer {
   padding:34px var(--px);
@@ -653,42 +831,185 @@ footer {
 .rv.in { opacity:1; transform:translateY(0); }
 .d1{transition-delay:.08s} .d2{transition-delay:.17s} .d3{transition-delay:.26s} .d4{transition-delay:.35s}
 
+/* ── HAMBURGER ───────────────────────────────── */
+.nav-ham {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  transition: background .2s;
+}
+.nav-ham:hover { background: rgba(17,18,16,.06); }
+.nav-ham span {
+  display: block;
+  width: 22px; height: 1.5px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform .32s var(--ease), opacity .22s;
+  transform-origin: center;
+}
+.nav-ham.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-ham.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-ham.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── MOBILE MENU ─────────────────────────────── */
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--night);
+  z-index: 850;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .35s var(--ease);
+  padding: 0 32px;
+}
+.mobile-menu.open { opacity: 1; }
+.mm-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.mm-link {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 10vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+  line-height: 1;
+  padding: 18px 0;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  transition: color .2s;
+}
+.mm-link:hover { color: #fff; }
+.mm-cta {
+  margin-top: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 36px;
+  background: #fff;
+  color: var(--night);
+  border-radius: 100px;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  text-decoration: none;
+  transition: opacity .2s, transform .2s;
+}
+.mm-cta:hover { opacity: .88; transform: scale(.97); }
+.mm-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.08);
+  border: none; border-radius: 50%;
+  color: #fff; font-size: 1.2rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.mm-close:hover { background: rgba(255,255,255,.14); }
+
 /* ── RESPONSIVE ──────────────────────────────── */
 @media (max-width:1024px) {
-  .hero { grid-template-columns:1fr 1fr; grid-template-rows:auto auto; }
-  .hero-r {
-    grid-column:1/-1;
-    flex-direction:row; flex-wrap:wrap;
-    justify-content:space-between; align-items:flex-start;
-    gap:20px;
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
-  .stat { text-align:left; }
-  .hero-frame { width:min(255px,44vw); }
-  .philosophy { flex-direction:column; text-align:center; gap:16px; }
-  .philo-mark { display:none; }
+  .hero-l { align-items: center; }
+  .hero-kicker { justify-content: center; }
+  .hero-r {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: start;
+    text-align: center;
+  }
+  .stat { text-align: center; }
+  .philosophy { flex-direction: column; text-align: center; gap: 16px; }
+  .philo-mark { display: none; }
 }
 @media (max-width:768px) {
-  :root { --px:20px; }
+  :root { --px: 20px; --nav-h: 60px; }
+
+  /* Nav */
+  .nav-center, .nav-cta, .nav-social { display: none; }
+  .nav-ham { display: flex; }
+
+  /* Hero */
   .hero {
-    grid-template-columns:1fr;
-    padding-top:calc(var(--nav-h)+48px);
-    text-align:center;
+    grid-template-columns: 1fr;
+    padding-top: calc(var(--nav-h) + 36px);
+    padding-bottom: 56px;
+    text-align: center;
+    gap: 20px;
   }
-  .hero-l { align-items:center; }
-  .hero-kicker { justify-content:center; }
-  .hero-bio { max-width:38ch; }
-  .hero-m { order:-1; }
-  .hero-frame { width:min(230px,66vw); }
-  .hero-r { grid-column:1; justify-content:center; }
-  .stat { text-align:center; }
-  .nav-center { display:none; }
-  .cgrid { grid-template-columns:1fr; }
-  .sec-rule { display:none; }
-  footer { flex-direction:column; gap:14px; text-align:center; }
+  .hero-l { align-items: center; }
+  .hero-kicker { justify-content: center; }
+  .hero-bio { max-width: 36ch; }
+
+  /* Stats: 2×2 grid */
+  .hero-r {
+    grid-column: 1;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 32px;
+  }
+  .stat { text-align: center; }
+  .stat-n { font-size: clamp(2rem, 9vw, 3.2rem); }
+  .stat-lbl { font-size: .58rem; }
+
+  /* Bottom strip: hide on mobile */
+  .strip { display: none; }
+
+  /* Sticky section */
+  .sticky-wrap { height: 200vh; }
+  .s-hl-main { font-size: clamp(4rem, 16vw, 8rem); }
+
+  /* Cards */
+  .cgrid { grid-template-columns: 1fr; }
+  .sec-rule { display: none; }
+
+  /* Newsletter */
+  .nl-form { flex-direction: column; }
+  .nl-btn { width: 100%; padding: 14px; }
+  .nl-promise { gap: 14px; }
+
+  /* Footer */
+  footer { flex-direction: column; gap: 14px; text-align: center; }
 }
-@media (prefers-reduced-motion:reduce) {
-  *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
-  .t-track { animation:none; }
+@media (max-width:480px) {
+  :root { --px: 16px; }
+  .hl-pre { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+  .hl-main { font-size: clamp(2.6rem, 13vw, 3.8rem); }
+  .hero-r { gap: 16px 20px; }
+  .stat-n { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+  .pill { font-size: .66rem; padding: 4px 10px; }
+  .circle-cta { width: 96px; height: 96px; }
+  .cc-main { font-size: .86rem; }
+  .sec-hl { font-size: clamp(1.5rem, 7vw, 2.4rem); }
+  .card { padding: 22px 20px; border-radius: 16px; }
+  .c-hl { font-size: clamp(1.2rem, 5.5vw, 1.6rem); }
+  .sk { font-size: .67rem; padding: 4px 10px; }
+  .exp-title { font-size: .82rem; }
+  .exp-co { font-size: .72rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .t-track { animation: none; }
 }
 </style>
 </head>
@@ -706,33 +1027,70 @@ footer {
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
-  <button class="nav-cta" onclick="location.href='mailto:yeonbi.j721@gmail.com'">
+  <div class="nav-social" aria-label="Social links">
+    <a href="#" aria-label="LinkedIn">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
+        <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+      </svg>
+    </a>
+    <a href="#" aria-label="Instagram">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+    </a>
+  </div>
+  <button class="nav-cta" onclick="location.href='mailto:yeonbi.j721@gmail.com">
     <span class="dot" aria-hidden="true"></span>
     Get in touch
   </button>
+  <button class="nav-ham" id="navHam" aria-label="메뉴 열기" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- ── MOBILE MENU ───────────────────────────── -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="내비게이션 메뉴" aria-hidden="true">
+  <button class="mm-close" id="mmClose" aria-label="메뉴 닫기">✕</button>
+  <nav class="mm-links">
+    <a href="#home"    class="mm-link">Home</a>
+    <a href="#work"    class="mm-link">Work</a>
+    <a href="#about"   class="mm-link">About</a>
+    <a href="#contact" class="mm-link">Contact</a>
+  </nav>
+  <a class="mm-cta" href="mailto:yeonbi.j721@gmail.com">Get in touch ↗</a>
+</div>
 
 <!-- ── HERO ──────────────────────────────────── -->
 <section class="hero" id="home" aria-label="Introduction">
 
-  <div class="hero-l">
-    <span class="hero-kicker rv">Content Editor</span>
+  <!-- Full-section background video -->
+  <div class="hero-bg" aria-hidden="true">
+    <video autoplay muted loop playsinline>
+      <source src="hero.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-overlay" aria-hidden="true"></div>
 
-    <h1 class="hero-hl rv d1" aria-label="Every word has a job to do.">
-      <span class="hl-pre">Every word</span>
-      <em class="hl-main">has a job.</em>
+  <div class="hero-l">
+    <span class="hero-kicker rv">B2B 여행 전문 기자</span>
+
+    <h1 class="hero-hl rv d1" aria-label="여행 산업을 연결하고, 가치를 전하는 B2B 전문 기자">
+      <span class="hl-pre">여행 산업을 연결하고,</span>
+      <em class="hl-main">가치를 전하는</em>
     </h1>
 
     <div class="pills rv d2">
-      <span class="pill">#Content Strategy</span>
-      <span class="pill">#Copywriting</span>
-      <span class="pill">#Editorial</span>
+      <span class="pill">#여행B2B콘텐츠</span>
+      <span class="pill">#브랜드스토리텔링</span>
+      <span class="pill">#취재·기획</span>
     </div>
 
     <p class="hero-bio rv d3">
-      Good content earns attention — it doesn't beg for it.
-      I build editorial strategies and craft copy that gives brands
-      a distinct, consistent voice readers want to come back to.
+      여행 업계의 흐름을 읽고, 브랜드의 이야기를 콘텐츠로 연결합니다.
+      B2B 여행 마케팅 콘텐츠로 비즈니스의 성장을 돕는 것이 제가 가장 잘하는 일입니다.
     </p>
 
     <a class="circle-cta rv d4" href="mailto:yeonbi.j721@gmail.com" aria-label="Contact Yeonbi Jeong">
@@ -742,31 +1100,10 @@ footer {
     </a>
   </div>
 
-  <!-- Video 1: Hero -->
-  <div class="hero-m rv d1">
-    <div class="hero-frame" aria-label="Portfolio showreel">
-      <!--
-        ★ 영상 1 연결 방법:
-        이 주석을 지우고 src에 실제 파일명을 넣으세요.
-        HTML 파일과 같은 폴더에 영상을 두면 됩니다.
-
-        <video autoplay muted loop playsinline>
-          <source src="video-hero.mp4" type="video/mp4">
-        </video>
-      -->
-      <div class="vid-ph" aria-hidden="true">
-        <div class="vid-ring">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </div>
-        <span class="vid-tag">Video 01 · Hero</span>
-      </div>
-    </div>
-  </div>
-
   <div class="hero-r" aria-label="Statistics">
     <div class="stat rv d1">
       <span class="stat-lbl">Years of<br>Experience</span>
-      <span class="stat-n" data-to="5">0</span>
+      <span class="stat-n" data-to="15">0</span>
     </div>
     <div class="stat rv d2">
       <span class="stat-lbl">Satisfaction<br>Rate</span>
@@ -786,7 +1123,7 @@ footer {
 
 <!-- Fixed bottom strip -->
 <div class="strip" aria-hidden="true">
-  <span class="strip-tag">Every word has a job to do. I make sure it does it well.</span>
+  <span class="strip-tag">좋은 콘텐츠는 여행을 기억하게 하고, 비즈니스를 성장하게 합니다.</span>
   <div class="strip-icons">
     <a href="mailto:yeonbi.j721@gmail.com" aria-label="Email">
       <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -816,9 +1153,9 @@ footer {
 <div class="philosophy rv" aria-label="Editorial philosophy">
   <span class="philo-mark" aria-hidden="true">"</span>
   <p class="philo-text">
-    A brand's voice isn't found — it's <strong>built</strong>, word by word,
-    edit by edit, until every piece of content feels like it could only
-    have come from you.
+    "여행에는 사람을 이어주고, 비즈니스에 기회를 만드는 힘이 있다고 믿습니다."
+    <br><br>
+    인사이트를 발견하고, 전략으로 연결하여 성장을 만듭니다.
   </p>
 </div>
 
@@ -843,27 +1180,27 @@ footer {
     </div>
 
     <div class="sticky-ov">
-      <span class="s-label">— The Work —</span>
-      <div class="s-hl-wrap" aria-label="Editorial Works">
-        <span class="s-hl-pre">Editorial</span>
-        <span class="s-hl-main">Works.</span>
+      <span class="s-label">— 포트폴리오 —</span>
+      <div class="s-hl-wrap" aria-label="여행 B2B 콘텐츠 전문가">
+        <span class="s-hl-pre">Travel B2B</span>
+        <span class="s-hl-main">Journalist.</span>
       </div>
     </div>
 
     <div class="ticker" aria-hidden="true">
       <div class="t-track">
-        <span class="t-item">Content Strategy<span class="sep"></span></span>
-        <span class="t-item">Copywriting<span class="sep"></span></span>
-        <span class="t-item">Editorial Direction<span class="sep"></span></span>
-        <span class="t-item">Brand Voice<span class="sep"></span></span>
-        <span class="t-item">Digital Content<span class="sep"></span></span>
-        <span class="t-item">Social Storytelling<span class="sep"></span></span>
-        <span class="t-item">Content Strategy<span class="sep"></span></span>
-        <span class="t-item">Copywriting<span class="sep"></span></span>
-        <span class="t-item">Editorial Direction<span class="sep"></span></span>
-        <span class="t-item">Brand Voice<span class="sep"></span></span>
-        <span class="t-item">Digital Content<span class="sep"></span></span>
-        <span class="t-item">Social Storytelling<span class="sep"></span></span>
+        <span class="t-item">취재 &amp; 기사 작성<span class="sep"></span></span>
+        <span class="t-item">콘텐츠 기획<span class="sep"></span></span>
+        <span class="t-item">브랜드 스토리텔링<span class="sep"></span></span>
+        <span class="t-item">SNS &amp; 웹 콘텐츠<span class="sep"></span></span>
+        <span class="t-item">뉴스레터 &amp; 리포트<span class="sep"></span></span>
+        <span class="t-item">여행 B2B 인사이트<span class="sep"></span></span>
+        <span class="t-item">취재 &amp; 기사 작성<span class="sep"></span></span>
+        <span class="t-item">콘텐츠 기획<span class="sep"></span></span>
+        <span class="t-item">브랜드 스토리텔링<span class="sep"></span></span>
+        <span class="t-item">SNS &amp; 웹 콘텐츠<span class="sep"></span></span>
+        <span class="t-item">뉴스레터 &amp; 리포트<span class="sep"></span></span>
+        <span class="t-item">여행 B2B 인사이트<span class="sep"></span></span>
       </div>
     </div>
 
@@ -878,7 +1215,7 @@ footer {
 <!-- ── ABOUT CARDS ───────────────────────────── -->
 <div class="cards" id="about">
   <div class="sec-head">
-    <h2 class="sec-hl">The <em>Story</em></h2>
+    <h2 class="sec-hl">About <em>Me</em></h2>
     <div class="sec-rule" aria-hidden="true"></div>
   </div>
 
@@ -892,16 +1229,16 @@ footer {
           <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
         </svg>
       </div>
-      <h3 class="c-hl">What I<br>Do Best</h3>
+      <h3 class="c-hl">핵심<br>역량</h3>
       <div class="sk-cloud">
-        <span class="sk">Content Strategy</span>
-        <span class="sk">Copywriting</span>
-        <span class="sk">SEO Writing</span>
-        <span class="sk">Editorial Planning</span>
-        <span class="sk">Brand Storytelling</span>
-        <span class="sk">Social Media</span>
-        <span class="sk">Notion</span>
-        <span class="sk">Figma</span>
+        <span class="sk">취재 &amp; 인터뷰</span>
+        <span class="sk">기사 작성</span>
+        <span class="sk">콘텐츠 기획</span>
+        <span class="sk">카피라이팅</span>
+        <span class="sk">브랜드 스토리텔링</span>
+        <span class="sk">SNS &amp; 콘텐츠 제작</span>
+        <span class="sk">데이터 분석</span>
+        <span class="sk">Notion · Figma</span>
       </div>
     </div>
 
@@ -914,28 +1251,28 @@ footer {
           <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
         </svg>
       </div>
-      <h3 class="c-hl" style="color:#fff">Where I've<br>Been</h3>
+      <h3 class="c-hl" style="color:#fff">경력<br>사항</h3>
       <div class="exp-rows">
         <div class="exp-row">
           <div>
-            <div class="exp-title">Content Editor</div>
-            <div class="exp-co">Company Name</div>
+            <div class="exp-title">Senior Content Editor</div>
+            <div class="exp-co">TTL NEWS</div>
           </div>
-          <div class="exp-yr">2022 – Present</div>
+          <div class="exp-yr">2017 – 2025</div>
         </div>
         <div class="exp-row">
           <div>
-            <div class="exp-title">Content Writer</div>
-            <div class="exp-co">Company Name</div>
+            <div class="exp-title">Reporter</div>
+            <div class="exp-co">GTN (Global Travel News)</div>
           </div>
-          <div class="exp-yr">2020 – 2022</div>
+          <div class="exp-yr">2011 – 2015</div>
         </div>
         <div class="exp-row">
           <div>
-            <div class="exp-title">Junior Editor</div>
-            <div class="exp-co">Company Name</div>
+            <div class="exp-title">프리랜서 콘텐츠 기획자</div>
+            <div class="exp-co">여행 브랜드 다수</div>
           </div>
-          <div class="exp-yr">2018 – 2020</div>
+          <div class="exp-yr">2015 – 현재</div>
         </div>
       </div>
     </div>
@@ -948,29 +1285,29 @@ footer {
           <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
         </svg>
       </div>
-      <h3 class="c-hl">Selected<br>Projects</h3>
+      <h3 class="c-hl">주요<br>프로젝트</h3>
       <div class="proj-rows">
         <div class="proj-row" tabindex="0">
           <span class="p-n">01</span>
           <div class="p-info">
-            <div class="p-name">Project Title One</div>
-            <div class="p-type">Content Strategy · 2024</div>
+            <div class="p-name">여행 B2B 콘텐츠 마케팅 운영</div>
+            <div class="p-type">SNS 콘텐츠 · 2024</div>
           </div>
           <span class="p-arr">↗</span>
         </div>
         <div class="proj-row" tabindex="0">
           <span class="p-n">02</span>
           <div class="p-info">
-            <div class="p-name">Project Title Two</div>
-            <div class="p-type">Brand Copywriting · 2023</div>
+            <div class="p-name">트렌드 리포트 &amp; 뉴스레터 발행</div>
+            <div class="p-type">Editorial Direction · 2023</div>
           </div>
           <span class="p-arr">↗</span>
         </div>
         <div class="proj-row" tabindex="0">
           <span class="p-n">03</span>
           <div class="p-info">
-            <div class="p-name">Project Title Three</div>
-            <div class="p-type">Editorial · 2023</div>
+            <div class="p-name">여행 스타일 제안 서비스 기획</div>
+            <div class="p-type">콘텐츠 전략 기획 · 2024</div>
           </div>
           <span class="p-arr">↗</span>
         </div>
@@ -986,7 +1323,7 @@ footer {
           <polyline points="22,6 12,13 2,6"/>
         </svg>
       </div>
-      <h3 class="c-hl" style="color:#fff">Let's Make<br>Something</h3>
+      <h3 class="c-hl" style="color:#fff">함께<br>만들어요</h3>
       <div class="c-links">
         <a class="c-link" href="mailto:yeonbi.j721@gmail.com">
           <div class="c-ico">
@@ -1030,9 +1367,55 @@ footer {
   </div>
 </div>
 
+<!-- ── NEWSLETTER ───────────────────────────── -->
+<section class="nl-section" id="newsletter" aria-label="뉴스레터 구독">
+  <div class="nl-badge rv">
+    <span class="nl-badge-dot" aria-hidden="true"></span>
+    ★ B2B 여행 기획자의 눈물겨운 호소 ★
+  </div>
+
+  <span class="nl-eyebrow rv d1">Travel Insider C — Newsletter</span>
+
+  <h2 class="nl-headline rv d2">
+    구독자를<br><em>찾습니다</em>
+  </h2>
+
+  <p class="nl-sub rv d3">
+    "콘텐츠를 정말로 '제대로' 읽고 함께해주실 구독자를 찾습니다…"
+  </p>
+
+  <div class="nl-promise rv d4">
+    <span class="nl-promise-item">항공·호텔·OTA B2B 인사이트</span>
+    <span class="nl-promise-item">여행 업계 트렌드 리포트</span>
+    <span class="nl-promise-item">콘텐츠 기획 노하우</span>
+    <span class="nl-promise-item">월 2회 발행</span>
+  </div>
+
+  <form class="nl-form rv" onsubmit="handleNlSubmit(event)" novalidate>
+    <input
+      class="nl-input"
+      type="email"
+      id="nlEmail"
+      name="email"
+      placeholder="이메일 주소를 입력해주세요"
+      autocomplete="email"
+      required
+      aria-label="뉴스레터 구독 이메일"
+    >
+    <button class="nl-btn" type="submit">구독하기</button>
+  </form>
+
+  <p class="nl-note rv">스팸 없음. 언제든지 구독 취소 가능. 진심만 담아 보냅니다.</p>
+
+  <div class="nl-disclaimer rv">
+    <strong>그래도… 언젠가, 저에게도 구독자가 나타나겠죠?</strong><br>
+    그날까지, 저는 포기하지 않습니다! — 간절한 B2B 여행 기획자 드림
+  </div>
+</section>
+
 <!-- ── FOOTER ────────────────────────────────── -->
 <footer>
-  <span class="ft-tag">Every word has a job to do. — Yeonbi Jeong</span>
+  <span class="ft-tag">좋은 콘텐츠는 여행을 기억하게 하고, 비즈니스를 성장하게 합니다. — Yeonbi Jeong</span>
   <nav class="ft-links">
     <a href="mailto:yeonbi.j721@gmail.com">Email</a>
     <a href="#">LinkedIn</a>
@@ -1042,6 +1425,26 @@ footer {
 
 <!-- ── SCRIPT ────────────────────────────────── -->
 <script>
+/* Newsletter form */
+function handleNlSubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById('nlEmail');
+  const btn = e.target.querySelector('.nl-btn');
+  if (!input.value || !input.validity.valid) {
+    input.focus();
+    return;
+  }
+  const email = input.value;
+  btn.textContent = '감사합니다 ✓';
+  btn.style.background = '#4caf7a';
+  input.value = '';
+  input.placeholder = '구독 신청이 완료되었습니다!';
+  input.disabled = true;
+  setTimeout(() => {
+    window.location.href = 'mailto:yeonbi.j721@gmail.com?subject=뉴스레터 구독 신청&body=안녕하세요! 뉴스레터 구독 신청합니다.%0A%0A이메일: ' + encodeURIComponent(email);
+  }, 400);
+}
+
 /* Nav */
 const nav = document.getElementById('nav');
 addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 60), { passive:true });
@@ -1084,6 +1487,31 @@ document.querySelectorAll('[data-to]').forEach(el => cio.observe(el));
 document.querySelectorAll('.proj-row').forEach(el => {
   el.addEventListener('keydown', e => { if (e.key === 'Enter') el.click(); });
 });
+
+/* Mobile menu */
+const ham  = document.getElementById('navHam');
+const mob  = document.getElementById('mobileMenu');
+const mmCl = document.getElementById('mmClose');
+
+function openMenu() {
+  mob.style.display = 'flex';
+  requestAnimationFrame(() => { mob.classList.add('open'); mob.removeAttribute('aria-hidden'); });
+  ham.classList.add('open');
+  ham.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  mob.classList.remove('open');
+  ham.classList.remove('open');
+  ham.setAttribute('aria-expanded', 'false');
+  mob.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  setTimeout(() => { mob.style.display = ''; }, 350);
+}
+ham.addEventListener('click', () => ham.classList.contains('open') ? closeMenu() : openMenu());
+mmCl.addEventListener('click', closeMenu);
+mob.querySelectorAll('.mm-link, .mm-cta').forEach(a => a.addEventListener('click', closeMenu));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && mob.classList.contains('open')) closeMenu(); });
 </script>
 
 </body>
